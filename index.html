@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Login Page - Hizcore</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #8EC5FC 0%, #E0C3FC 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      width: 400px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 25px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #8EC5FC;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      background-color: #8EC5FC;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #6FA7FF;
+    }
+
+    #errorMsg {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .help-link {
+      margin-top: 20px;
+      display: inline-block;
+      color: #8EC5FC;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Login to Your Account</h2>
+    <form id="loginForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p id="errorMsg"></p>
+
+    <a class="help-link" href="mailto:help@portal.hizcore.com">Need help? Contact help@portal.hizcore.com</a><br>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    // Define users with their corresponding main and backup passwords
+    const users = {
+      'tezt': ['1234', '3214', '4445'],
+      'emanuel': ['2345', '5432', '5556'],
+      'aron': ['3456', '6543', '6667'],
+      'hizkielaschalew': ['34f56', '6543', '6667'],
+    };
+
+    let attempts = 0;
+    const maxAttempts = 3;
+
+    loginForm.addEventListener('submit', function(event) {
+      event.preventDefault();  // Prevent form submission
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Check if the username exists and if the password matches any of the valid ones
+      if (users[username] && users[username].includes(password)) {
+        // Set the authentication flag in session storage
+        sessionStorage.setItem('authenticated', 'true');
+        
+        // Redirect to a specific page based on the username
+        window.location.href = username + '.html';  // e.g., tezt.html
+      } else {
+        attempts++;
+        if (attempts >= maxAttempts) {
+          // Redirect to a failure page after 3 failed attempts
+          window.location.href = 'error.html';
+        } else {
+          errorMsg.textContent = `Incorrect login. You have ${maxAttempts - attempts} attempt(s) left.`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
